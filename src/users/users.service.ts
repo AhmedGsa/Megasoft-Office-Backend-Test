@@ -23,15 +23,22 @@ export class UsersService {
   }
 
   async findOneByEmail(email: string) {
-    return await this.userRepository.findOneBy({ email });
+    return await this.userRepository.findOne({
+      where: { email },
+      select: ['id', 'email', 'password'],
+    });
   }
 
-  findAll() {
+  async findAll() {
     return `This action returns all users`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: number) {
+    const user = this.userRepository.findOneBy({id});
+    if (!user) {
+      throw new BadRequestException('User with provided id does not exist');
+    }
+    return user;
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

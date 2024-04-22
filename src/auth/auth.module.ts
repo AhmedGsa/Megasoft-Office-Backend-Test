@@ -8,6 +8,8 @@ import { JwtConfig } from 'src/config/jwt.config';
 import { TokenService } from './token.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/users/entities/user.entity';
+import { JwtAccessTokenStrategy } from './strategies/jwt-access-token.strategy';
+import { JwtRefreshTokenStrategy } from './strategies/jwt-refresh-token.strategy';
 
 @Module({
   imports: [
@@ -16,6 +18,6 @@ import { User } from 'src/users/entities/user.entity';
     TypeOrmModule.forFeature([User]),
   ],
   controllers: [AuthController],
-  providers: [AuthService, UsersService, TokenService],
+  providers: [AuthService, UsersService, TokenService, JwtAccessTokenStrategy, JwtRefreshTokenStrategy],
 })
 export class AuthModule {}

@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EnvConfigModule } from 'src/config/config.module';
 import { DatabaseConfig } from 'src/config/database.config';
+import { Product } from 'src/products/entities/product.entity';
 import { User } from 'src/users/entities/user.entity';
 
 @Module({
@@ -17,7 +18,7 @@ import { User } from 'src/users/entities/user.entity';
             synchronize: databaseConfig.getSynchronize(),
             charset: "utf8mb4",
             collation: "utf8mb4_unicode_ci",
-            entities: [User]
+            entities: [User, Product]
         }),
         inject: [DatabaseConfig],
     })],

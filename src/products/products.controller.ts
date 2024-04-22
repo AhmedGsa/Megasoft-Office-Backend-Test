@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -7,6 +7,7 @@ import { JwtAccessTokenGuard } from 'src/auth/guards/jwt-access-token.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { Role } from 'src/users/enum/role.enum';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { FilterProductsDto } from './dto/filter-product.dto';
 
 @ApiTags('Products')
 @Controller('products')
@@ -24,6 +25,11 @@ export class ProductsController {
   @Get()
   findAll() {
     return this.productsService.findAll();
+  }
+
+  @Get('filter')
+  filter(@Query() filterProductsDto: FilterProductsDto) {
+    return this.productsService.filter(filterProductsDto);
   }
 
   @Get(':id')

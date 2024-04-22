@@ -22,16 +22,25 @@ export class ProductsController {
     return this.productsService.create(createProductDto);
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAccessTokenGuard, RolesGuard)
+  @Roles(Role.MANAGER, Role.ACCOUNTANT)
   @Get()
   findAll() {
     return this.productsService.findAll();
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAccessTokenGuard, RolesGuard)
+  @Roles(Role.USER)
   @Get('filter')
   filter(@Query() filterProductsDto: FilterProductsDto) {
     return this.productsService.filter(filterProductsDto);
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAccessTokenGuard, RolesGuard)
+  @Roles(Role.MANAGER, Role.ACCOUNTANT)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.productsService.findOne(+id);
@@ -45,6 +54,9 @@ export class ProductsController {
     return this.productsService.update(+id, updateProductDto);
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAccessTokenGuard, RolesGuard)
+  @Roles(Role.MANAGER, Role.ACCOUNTANT)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.productsService.remove(+id);

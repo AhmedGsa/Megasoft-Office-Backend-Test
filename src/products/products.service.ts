@@ -3,7 +3,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from './entities/product.entity';
-import { Between, LessThanOrEqual, Like, MoreThanOrEqual, Repository } from 'typeorm';
+import { Between, ILike, LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
 import { FilterProductsDto } from './dto/filter-product.dto';
 
 @Injectable()
@@ -24,7 +24,7 @@ export class ProductsService {
   async filter(filterProductsDto: FilterProductsDto) {
     const [products, total] = await this.productRepository.findAndCount({
       where: {
-        name: filterProductsDto.name ? Like(`%${filterProductsDto.name}%`) : undefined,
+        name: filterProductsDto.name ? ILike(`%${filterProductsDto.name}%`) : undefined,
         category: filterProductsDto.category? filterProductsDto.category : undefined,
         price: filterProductsDto.minPrice && filterProductsDto.maxPrice ? Between(filterProductsDto.minPrice, filterProductsDto.maxPrice) : filterProductsDto.minPrice ? MoreThanOrEqual(filterProductsDto.minPrice) : filterProductsDto.maxPrice ? LessThanOrEqual(filterProductsDto.maxPrice) : undefined
       },

@@ -19,7 +19,9 @@ export class UsersService {
       throw new BadRequestException('User with provided email already exists');
     }
     const user = this.userRepository.create({...createUserDto, password: await Hash.hash(createUserDto.password)});
-    return await this.userRepository.save(user);
+    await this.userRepository.save(user);
+    delete user.password;
+    return user;
   }
 
   async findOneByEmail(email: string) {
@@ -30,7 +32,7 @@ export class UsersService {
   }
 
   async findAll() {
-    return `This action returns all users`;
+    return await this.userRepository.find();
   }
 
   async findOne(id: number) {
@@ -41,11 +43,24 @@ export class UsersService {
     return user;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    let user = await this.userRepository.findOneBy({id});
+    if (!user) {
+      throw new BadRequestException('User with provided id does not exist');
+    }
+    const newPassword = updateUserDto.password ? await Hash.hash(updateUserDto.password) : null;
+    user = {...user, ...updateUserDto, password: newPassword || user.password};
+    await this.userRepository.save(user);
+    delete user.password;
+    return { msg: 'User updated successfully', user};
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: number) {
+    const user = await this.userRepository.findOneBy({id});
+    if (!user) {
+      throw new BadRequestException('User with provided id does not exist');
+    }
+    await this.userRepository.delete(id);
+    return { msg: 'User deleted successfully'};
   }
 }

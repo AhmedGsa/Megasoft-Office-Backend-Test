@@ -1,8 +1,11 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { RegisterDto } from './dtos/register.dto';
 import { LoginDto } from './dtos/login.dto';
+import { GetCurrentUser } from './decorators/current-user.decorator';
+import { UserPayload } from './interfaces/user-payload.interface';
+import { JwtRefreshTokenGuard } from './guards/jwt-refresh-token.guard';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -22,5 +25,12 @@ export class AuthController {
   @Post('/login')
   login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtRefreshTokenGuard)
+  @Get('/refresh')
+  refresh(@GetCurrentUser() userPayload: UserPayload) {
+    return this.authService.refresh(userPayload.userId);
   }
 }

@@ -41,4 +41,14 @@ export class AuthService {
     const refreshToken = await this.tokenService.generateRefreshToken({userId: user.id, email: user.email});
     return {accessToken, refreshToken};
   }
+
+  async refresh(userId: number) {
+    const user = await this.usersService.findOne(userId);
+    if (!user) {
+      throw new BadRequestException('User not found');
+    }
+    const accessToken = await this.tokenService.generateAccessToken({userId: user.id, email: user.email});
+    const refreshToken = await this.tokenService.generateRefreshToken({userId: user.id, email: user.email});
+    return {accessToken, refreshToken};
+  }
 }

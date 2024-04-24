@@ -1,0 +1,41 @@
+version: '3.3'
+services:
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: products_db
+    ports:
+      - "5430:5432"
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    networks:
+      - darckoum-network
+  nest-app:
+    build: .
+    ports:
+      - '3000:3000'
+    depends_on:
+      - db
+    environment:
+      - DATABASE_HOST=db-1
+      - DATABASE_PORT=5432
+      - DATABASE_USERNAME=root
+      - DATABASE_PASSWORD=root
+      - DATABASE_NAME=products_db
+      - DATABASE_TYPE=postgres
+      - DATABASE_SYNCHRONIZE=true
+      - JWT_ACCESS_TOKEN_SECRET=MnJ0v8mW9Y6lNNhJHEajPf8mzsdxQZ4w
+      - JWT_ACCESS_TOKEN_EXPIRES_IN=15m
+      - JWT_REFRESH_TOKEN_SECRET=QZe5ExGvyEGn6X8cI8ldFNkRjZ451RPH
+      - JWT_REFRESH_TOKEN_EXPIRES_IN=7d
+      - PORT=3000
+    links:
+      - db
+    networks:
+      - darckoum-network
+networks:
+  darckoum-network:
+    driver: bridge

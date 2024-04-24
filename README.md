@@ -48,6 +48,7 @@
   "email": "accountant@gmail.com",
   "password": "password"
 }
+```
 
 - Simple user credentials: 
 ```json

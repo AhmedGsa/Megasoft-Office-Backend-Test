@@ -1,73 +1,142 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Megasoft Office Backend Test
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Setup
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+### 1- In Your Environment
 
-## Description
+- Add .env file in the root of the project with the following variables:
+    - MONGO_URI (MongoDB connection string)
+    - JWT_SECRET (JWT secret key)   
+    - JWT_EXPIRE_IN (JWT expiration time in seconds)
+    - JWT_EXPIRE_SHORT (JWT expiration time in seconds for short lived tokens)
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- Run `npm install` to install all dependencies
 
-## Installation
+- Run `npm start` to start the server
 
-```bash
-$ npm install
+#### Seed Data
+
+- Run `npm run seed` to seed the database with some random data
+
+### 2- Using Docker
+
+- Install Docker and Docker Compose Link [here](https://docs.docker.com/get-docker/)
+
+- Run `docker-compose build` to build the image
+
+- Run `docker-compose up` to start the server
+
+## API Documentation
+
+### Swagger Documentation
+
+- Swagger documentation is available at `/api-docs`
+
+- You can some sample requests in the swagger documentation
+
+### Postman Collection
+
+- Postman collection is available at `docs/Legal Doctrine Challenge.postman_collection.json`
+
+- You can import the collection in Postman and use it to test the API
+
+### Authentication
+
+- Authentication is done using Bearer JWT tokens
+
+- You can get a token by sending a POST request to `/api/v1/auth/login` with the following body:
+
+```json
+{
+  "email": "userone@gmail.com",
+  "password": "userone"
+}
 ```
 
-## Running the app
+- Or you can register a new user by sending a POST request to `/api/v1/auth/register` with the following body:
 
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+```json
+{
+  "email": "email@example.com",
+  "password": "password"
+}
 ```
 
-## Test
+- You can use the token to access protected routes by adding it to the `Authorization` header as a bearer token
 
-```bash
-# unit tests
-$ npm run test
+### Routes
 
-# e2e tests
-$ npm run test:e2e
+- All routes are prefixed with `/api/v1`
 
-# test coverage
-$ npm run test:cov
+- Product routes are prefixed with `/products`
+
+- Purchase routes are prefixed with `/purchases`
+
+- Authentication routes are prefixed with `/auth`
+
+- Card routes are prefixed with `/cards` (External API Integration)
+
+- Some routes are only available to admin users such as creating a new product, updating, or deleting a product
+
+### Database Schema
+
+- Product Schema
+
+```json
+{
+  "_id": "60fddc1b7f0b3a1e3c7b0b1e",
+  "name": "Product Name",
+  "category": "Product Category",
+  "price": 100,
+  "createdAt": "2023-07-25T15:00:00.000Z",
+  "updatedAt": "2023-07-25T15:00:00.000Z"
+}
 ```
 
-## Support
+Each product is defined by a unique id, a name, a category, a price, and a creation date.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+- Purchase Schema
 
-## Stay in touch
+```json
+{
+  "_id": "60fddc1b7f0b3a1e3c7b0b1e",
+  "product": "60fddc1b7f0b3a1e3c7b0b1e",
+  "user": "60fddc1b7f0b3a1e3c7b0b1e",
+  "quantity": 2,
+  "createdAt": "2023-07-25T15:00:00.000Z",
+  "updatedAt": "2023-07-25T15:00:00.000Z"
+}
+```
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Each purchase is defined by a unique id, a product id (purchased product), a user id (user who made the purchase), a quantity, and a creation date.
 
-## License
+- User Schema
 
-Nest is [MIT licensed](LICENSE).
+```json
+{
+  "_id": "60fddc1b7f0b3a1e3c7b0b1e",
+  "email": "user@user.com",
+  "password": "hashedPassword",
+  "isAdmin": false
+}
+```
+
+Each user is defined by a unique id, an email, a hashed password, and a boolean value indicating whether the user is an admin or not.
+
+### Usefull Information
+
+- Admin user credentials: 
+```json
+{
+  "email": "admin@admin.com",
+  "password": "adminadmin"
+}
+```
+
+- Simple user credentials: 
+```json
+{
+  "email": "userone@gmail.com",
+  "password": "userone"
+}
+```

@@ -1,0 +1,42 @@
+{
+    "products": [
+        {
+            "name": "Product 1",
+            "price": 100,
+            "category": "ELECTRONICS"
+        },
+        {
+            "name": "Product 2",
+            "price": 200,
+            "category": "ELECTRONICS"
+        },
+        {
+            "name": "Product 3",
+            "price": 300,
+            "category": "ELECTRONICS"
+        }
+    ],
+    "users": [
+        {
+            "firstName": "John",
+            "lastName": "Doe",
+            "email": "manager@example.com",
+            "password": "password",
+            "role": "MANAGER"
+        },
+        {
+            "firstName": "Jane",
+            "lastName": "Doe",
+            "email": "accountant@example.com",
+            "password": "password",
+            "role": "ACCOUNTANT"
+        },
+        {
+            "firstName": "Jim",
+            "lastName": "Doe",
+            "email": "user@example.com",
+            "password": "password",
+            "role": "USER"
+        }
+    ]
+}
